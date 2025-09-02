@@ -1,6 +1,8 @@
 import type { Contact } from "@/types/Contact";
 import { Input } from "./ui/input";
 import { TableCard } from "./tableCard";
+import { useSequencialSearch } from "@/hooks/useSequencialSearch";
+import { useEffect } from "react";
 
 export const SearchContact = () => {
   const data = [
@@ -12,6 +14,12 @@ export const SearchContact = () => {
       email: "renanzingatin123@gmail.com",
     }, // Inserir dados do CSV
   ] as Contact[];
+
+  const filteredSequencial = useSequencialSearch()
+
+  useEffect(() =>{
+    console.log(filteredSequencial)
+  }, [filteredSequencial])
 
   return (
     <div className="flex flex-col gap-5 justify-center items-center h-full w-full">

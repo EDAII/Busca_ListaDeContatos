@@ -1,5 +1,5 @@
 import { Header } from "./components/header";
-import { SearchContact } from "./components/searchcontact";
+import { SearchContact } from "./components/searchContact";
 import { ThemeProvider } from "./providers/theme-provider";
 
 function App() {
