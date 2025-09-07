@@ -29,7 +29,6 @@ export const useHashSearch = ({ data, searchTerm }: useHashSearchProps) => {
       table[index].push(contact);
     });
     return table;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   useEffect(() => {
@@ -58,7 +57,6 @@ export const useHashSearch = ({ data, searchTerm }: useHashSearchProps) => {
     setHashResults(results);
     setHashTime(end - start);
     setHashComparisons(comparisonsCount);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, data, hashTable]);
 
   return { hashResults, hashTime, hashComparisons };
