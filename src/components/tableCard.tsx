@@ -56,7 +56,6 @@ export const TableCard = ({
             <TableHeader>
               <TableRow>
                 <TableHead>ID</TableHead>
-                <TableHead>ID</TableHead>
                 <TableHead>Nome</TableHead>
                 <TableHead>Telefone</TableHead>
                 <TableHead>E-mail</TableHead>
