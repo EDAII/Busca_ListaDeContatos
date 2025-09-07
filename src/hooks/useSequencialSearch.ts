@@ -31,9 +31,8 @@ export const useSequentialSearch = ({
     for (let i = 0; i < data.length; i++) {
       comparisonsCount++;
       const fullName = `${data[i].firstName} ${data[i].lastName}`.toLowerCase();
-      const phone = data[i].phone.toLowerCase();
 
-      if (fullName.includes(lowerSearch) || phone.includes(lowerSearch)) {
+      if (fullName.includes(lowerSearch)) {
         found.push(data[i]);
       }
     }

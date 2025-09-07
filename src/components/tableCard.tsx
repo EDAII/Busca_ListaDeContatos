@@ -17,10 +17,15 @@ import {
 } from "@/components/ui/table";
 import type { Contact } from "@/types/Contact";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
+import { useEffect, useState } from "react";
+import { Button } from "./ui/button";
+import { Info } from "lucide-react";
+import { InfoModal } from "./infoModal";
 
 type TableCardProps = {
   title: string;
   description: string;
+  contentModal: string;
   data: Contact[];
   input: string;
   timer: string;
@@ -30,10 +35,11 @@ type TableCardProps = {
 export const TableCard = ({
   title,
   description,
+  contentModal,
   data,
   input,
   timer,
-  comparisonsQuantity
+  comparisonsQuantity,
 }: TableCardProps) => {
   const {
     paginatedData,
@@ -44,10 +50,25 @@ export const TableCard = ({
     setPage,
   } = usePagination(data, 10);
 
+const [shouldOpenInfoModal, setShouldOpenInfoModal] = useState(false)
+
+  useEffect(() => {
+    setPage(1);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="relative">
         <CardTitle>{title}</CardTitle>
+        <Button
+          variant="outline"
+          size="icon"
+          className="absolute top-0 right-6 h-7 w-7 rounded-full p-0"
+          onClick={() => setShouldOpenInfoModal(true)}
+        >
+          <Info className="absolute h-[1.2rem] w-[1.2rem]" />
+        </Button>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
@@ -95,7 +116,7 @@ export const TableCard = ({
               <span className="font-normal">{input}</span>
             </div>
             <div className="flex flex-col items-center">
-              <span className="font-bold">Operações:</span>
+              <span className="font-bold">N° Comparações:</span>
               <span className="font-normal">{comparisonsQuantity}</span>
             </div>
             <div className="flex flex-col items-center">
@@ -105,6 +126,7 @@ export const TableCard = ({
           </div>
         </div>
       </CardContent>
+      {shouldOpenInfoModal ? <InfoModal title={title} contentModal={contentModal} open={shouldOpenInfoModal} onOpenChange={setShouldOpenInfoModal}/>: <></>}
     </Card>
   );
 };

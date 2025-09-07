@@ -15,7 +15,7 @@ type searchContactProps = {
 export const SearchContact = ({ data, loading, error }: searchContactProps) => {
   const [inputValue, setInputValue] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  
+
   const { sequencialResults, sequencialTime, sequencialComparisons } =
     useSequentialSearch({ data, searchTerm });
   const { hashResults, hashTime, hashComparisons } = useHashSearch({
@@ -66,6 +66,7 @@ export const SearchContact = ({ data, loading, error }: searchContactProps) => {
                 <TableCard
                   title="Busca sequencial"
                   description="Eficiência O(n)"
+                  contentModal=""
                   data={sequencialResults}
                   input={searchTerm}
                   timer={`${sequencialTime.toFixed(2)} ms`}
@@ -75,6 +76,7 @@ export const SearchContact = ({ data, loading, error }: searchContactProps) => {
               <div className="w-1/3">
                 <TableCard
                   title="Busca Binária"
+                  contentModal=""
                   description="Eficiência O(log n)"
                   data={[]}
                   input={searchTerm}
@@ -85,6 +87,7 @@ export const SearchContact = ({ data, loading, error }: searchContactProps) => {
               <div className="w-1/3">
                 <TableCard
                   title="Hashing"
+                  contentModal="A busca por hashing funciona a partir de um cálculo realizado sobre o valor inserido. Neste caso, utilizamos o nome e o sobrenome como referência. Por isso, ao digitar um nome incorreto ou incompleto, a busca não é capaz de retornar resultados. Por outro lado, o hashing permite localizar os dados de forma muito rápida e com poucas operações, quando comparado à busca sequencial, além de não exigir a ordenação prévia dos elementos, como ocorre na busca binária."
                   description="Eficiência O(1) média"
                   data={hashResults}
                   input={searchTerm}
