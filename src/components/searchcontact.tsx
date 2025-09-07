@@ -1,27 +1,32 @@
-import type { Contact } from '@/types/Contact';
-import { Input } from './ui/input';
-import { TableCard } from './tableCard';
-import { useSequentialSearch } from '@/hooks/useSequencialSearch';
-import { useState } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Input } from "./ui/input";
+import { TableCard } from "./tableCard";
+import { useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import type { Contact } from "@/types/Contact";
+import { useSequentialSearch } from "@/hooks/useSequencialSearch";
+import { useHashSearch } from "@/hooks/useHashSearch";
 
-export const SearchContact = () => {
-  const [inputValue, setInputValue] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const { results: filteredSequencial, time: timeSequencial, loading, error } = useSequentialSearch(searchTerm);
+type searchContactProps = {
+  data: Contact[];
+  loading: boolean;
+  error: string | null;
+};
 
-  const placeholderData = [
-    {
-      id: 1,
-      firstName: 'Renanzin',
-      lastName: 'do Rodo',
-      phone: '4002-8922',
-      email: 'renanzingatin123@gmail.com',
-    },
-  ] as Contact[];
+export const SearchContact = ({ data, loading, error }: searchContactProps) => {
+  const [inputValue, setInputValue] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  
+  const { sequencialResults, sequencialTime, sequencialComparisons } =
+    useSequentialSearch({ data, searchTerm });
+  const { hashResults, hashTime, hashComparisons } = useHashSearch({
+    data,
+    searchTerm,
+  });
+
+  console.log(hashResults, hashTime, hashComparisons);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       setSearchTerm(inputValue);
     }
   };
@@ -30,12 +35,12 @@ export const SearchContact = () => {
     <div className="flex flex-col gap-5 justify-center items-center h-full w-full">
       {loading ? (
         <>
-          <Skeleton className="h-12 w-1/3 rounded-md" /> {/* Skeleton para o título */}
-          <Skeleton className="h-10 w-1/5 rounded-md" /> {/* Skeleton para o input */}
-          <div className="flex space-x-4">
-            <Skeleton className="h-64 w-1/3 rounded-md" /> {/* Skeleton para o TableCard da busca sequencial */}
-            <Skeleton className="h-64 w-1/3 rounded-md" /> {/* Skeleton para o TableCard da busca binária */}
-            <Skeleton className="h-64 w-1/3 rounded-md" /> {/* Skeleton para o TableCard de hashing */}
+          <Skeleton className="h-12 w-1/3 rounded-md" />{" "}
+          <Skeleton className="h-10 w-1/5 rounded-md" />{" "}
+          <div className="flex gap-4">
+            <Skeleton className="h-96 w-120 rounded-md flex-shrink-0" />
+            <Skeleton className="h-96 w-120 rounded-md flex-shrink-0" />
+            <Skeleton className="h-96 w-120 rounded-md flex-shrink-0" />
           </div>
         </>
       ) : (
@@ -53,31 +58,38 @@ export const SearchContact = () => {
               className="w-full text-lg py-2"
             />
           </div>
-          {error && <p className="text-red-500">Erro: {error}</p>}
-          {!error && (
-            <div className="flex space-x-4">
+          {error ? (
+            <p className="text-red-500">Erro: {error}</p>
+          ) : (
+            <div className="flex wrap space-x-4">
               <div className="w-1/3">
                 <TableCard
                   title="Busca sequencial"
                   description="Eficiência O(n)"
-                  data={filteredSequencial.length > 0 ? filteredSequencial : []}
-                  timer={`${timeSequencial.toFixed(2)} ms`}
+                  data={sequencialResults}
+                  input={searchTerm}
+                  timer={`${sequencialTime.toFixed(2)} ms`}
+                  comparisonsQuantity={sequencialComparisons}
                 />
               </div>
               <div className="w-1/3">
                 <TableCard
                   title="Busca Binária"
                   description="Eficiência O(log n)"
-                  data={placeholderData}
-                  timer="00:03"
+                  data={[]}
+                  input={searchTerm}
+                  timer={`${1} ms`}
+                  comparisonsQuantity={0}
                 />
               </div>
               <div className="w-1/3">
                 <TableCard
                   title="Hashing"
                   description="Eficiência O(1) média"
-                  data={placeholderData}
-                  timer="00:01"
+                  data={hashResults}
+                  input={searchTerm}
+                  timer={`${hashTime.toFixed(2)} ms`}
+                  comparisonsQuantity={hashComparisons}
                 />
               </div>
             </div>

@@ -1,56 +1,24 @@
-import { useState, useEffect } from 'react';
-import Papa from 'papaparse';
-import type { Contact } from '@/types/Contact';
+import { useState, useEffect } from "react";
+import type { Contact } from "@/types/Contact";
 
-export const useSequentialSearch = (searchTerm: string) => {
-  const [data, setData] = useState<Contact[]>([]);
-  const [results, setResults] = useState<Contact[]>([]);
-  const [time, setTime] = useState(0);
-  const [comparisons, setComparisons] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+type useSequentialSearchProps = {
+  data: Contact[];
+  searchTerm: string;
+};
 
+export const useSequentialSearch = ({
+  data,
+  searchTerm,
+}: useSequentialSearchProps) => {
+  const [sequencialResults, setSequencialResults] = useState<Contact[]>([]);
+  const [sequencialTime, setSequencialTime] = useState(0);
+  const [sequencialComparisons, setSequencialComparisons] = useState(0);
 
-  // Função para carregar o arquivo CSV
   useEffect(() => {
-    async function loadData() {
-      try {
-        setLoading(true);
-        const response = await fetch('/people-100000.csv');
-        if (!response.ok) {
-          throw new Error(`Erro ao carregar CSV: ${response.status}`);
-        }
-
-        const csv = await response.text();
-        const parsed = Papa.parse(csv, {
-          header: true,
-          skipEmptyLines: true,
-        }).data as any[];
-
-        const contacts: Contact[] = parsed.map((item) => ({
-          id: parseInt(item.Index || '0'),
-          firstName: item['First Name'] || '',
-          lastName: item['Last Name'] || '',
-          phone: item.Phone || '',
-          email: item.Email || '',
-        }));
-
-        setData(contacts);
-        setLoading(false);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Erro desconhecido');
-        setLoading(false);
-      }
-    }
-    loadData();
-  }, []);
-
-  // Função para realizar a busca sequencial
-  useEffect(() => {
-    if (loading || !data.length || !searchTerm) {
-      setResults([]);
-      setTime(0);
-      setComparisons(0);
+    if (!data.length || !searchTerm) {
+      setSequencialResults(data);
+      setSequencialTime(0);
+      setSequencialComparisons(0);
       return;
     }
 
@@ -72,10 +40,10 @@ export const useSequentialSearch = (searchTerm: string) => {
 
     const end = performance.now();
 
-    setResults(found);
-    setTime(end - start);
-    setComparisons(comparisonsCount);
-  }, [searchTerm, data, loading]);
+    setSequencialResults(found);
+    setSequencialTime(end - start);
+    setSequencialComparisons(comparisonsCount);
+  }, [searchTerm, data]);
 
-  return { results, time, comparisons, loading, error };
+  return { sequencialResults, sequencialTime, sequencialComparisons };
 };
