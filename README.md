@@ -1,69 +1,47 @@
-# React + TypeScript + Vite
+# Busca Lista De Contatos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Alunos  
+| Matrícula | Nome |  
+|-----------------------|---------------------|  
+| 21/062446 | Renan Araújo de Souza |  
+| 21/1062080 | Leandro Almeida Rocha Santos | 
 
-Currently, two official plugins are available:
+## Descrição do projeto
+O objetivo é comparar o tempo de busca e a quantidade de operações entre três tipos de algoritmos de busca (Sequencial, Busca Binária e Hashing). Retornando ao usuário qual é o mais eficiente para a busca feita.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Guia de instalação
 
-## Expanding the ESLint configuration
+### Dependências do projeto
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Linguagem**: Typescript<br>
+**Framework**: React, Nodev22
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Como executar o projeto
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+git clone https://github.com/EDAII/Busca_ListaDeContatos.git
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+yarn install
+```
+
+```
+yarn run dev
+```
+
+## Capturas de tela
+
+<img src="https://github.com/EDAII/Busca_ListaDeContatos/tree/main/public/busca1.jpg?raw=true" alt="Screenshot 01" />
+<img src="https://github.com/EDAII/Busca_ListaDeContatos/tree/main/public/busca2.jpg?raw=true" alt="Screenshot 02" />
+<img src="https://github.com/EDAII/Busca_ListaDeContatos/tree/main/public/busca3.jpg?raw=true" alt="Screenshot 03" />
+<img src="https://github.com/EDAII/Busca_ListaDeContatos/tree/main/public/busca4.jpg?raw=true" alt="Screenshot 04" />
+
+## Conclusões
+O projeto permitiu observar que diferentes algoritmos de busca apresentam vantagens distintas dependendo do contexto de aplicação:
+- Busca sequencial: adequada para conjuntos de dados pequenos devido à sua simplicidade. Entretanto, torna-se ineficiente em grandes volumes de dados, pois cada elemento precisa ser verificado individualmente.
+- Busca binária: geralmente mais rápida que a sequencial, pois reduz o número de comparações para aproximadamente log2​n. É eficiente para grandes volumes de dados, mas depende da ordenação prévia da estrutura de dados.
+- Busca por hash: potencialmente a mais rápida de todas, permitindo acesso quase direto aos elementos. No entanto, exige a criação de uma função de hash adequada e pode enfrentar colisões, além de depender de uma estrutura de dados apropriada.
+
+De forma geral, cada algoritmo demonstrou utilidade, mas também apresentou limitações específicas, mostrando que a escolha depende do tamanho dos dados e do contexto de aplicação.
+

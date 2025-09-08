@@ -12,7 +12,10 @@ export const useLoadData = () => {
     async function loadData() {
       try {
         setLoading(true);
-        const response = await fetch("/people-100000.csv");
+
+        const response = await fetch(
+          `${import.meta.env.BASE_URL}people-100000.csv`
+        );
         if (!response.ok) {
           throw new Error(`Erro ao carregar CSV: ${response.status}`);
         }
