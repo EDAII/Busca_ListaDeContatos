@@ -38,13 +38,6 @@ export const SearchContact = ({ data, loading, error }: searchContactProps) => {
   };
 
   const getFeedback = () => {
-    if (!searchTerm) {
-      return {
-        bestMethod: "Nenhum",
-        feedbackText: "Nenhuma busca foi realizada. Insira um termo de busca e pressione Enter para gerar o feedback.",
-      };
-    }
-
     const methods = [
       {
         name: "Busca Sequencial",
@@ -65,22 +58,27 @@ export const SearchContact = ({ data, loading, error }: searchContactProps) => {
         time: hashTime,
         comparisons: hashComparisons,
         description:
-          "A busca por hashing é muito rápida (O(1) média) quando o termo de busca é exato, mas menos flexível para buscas parciais.",
+          "A busca por hashing é muito rápida (O(1) média) quando o termo de busca é exato, mas menos flexível para buscas parciais. Um ponto forte é a rápida resposta mesmo com dados desordenados.",
       },
     ];
 
     const bestMethod = methods.reduce((best, current) => {
-      if (current.time === 0 && best.time === 0) return best;
-      if (best.time === 0) return current;
-      if (current.time === 0) return best;
-      if (current.time < best.time) return current;
-      if (current.time === best.time && current.comparisons < best.comparisons) return current;
+      if (current.time < best.time - Number.EPSILON) return current;
+      if (
+        Math.abs(current.time - best.time) < Number.EPSILON &&
+        current.comparisons < best.comparisons
+      )
+        return current;
       return best;
     }, methods[0]);
 
     return {
       bestMethod: bestMethod.name,
-      feedbackText: `O método mais eficiente foi **${bestMethod.name}** com tempo de **${bestMethod.time.toFixed(2)} ms** e **${bestMethod.comparisons} comparações**. ${bestMethod.description}`,
+      feedbackText: `O método mais eficiente foi **${
+        bestMethod.name
+      }** com tempo de **${bestMethod.time.toFixed(2)} ms** e **${
+        bestMethod.comparisons
+      } comparações**. ${bestMethod.description}`,
     };
   };
 
@@ -106,20 +104,20 @@ export const SearchContact = ({ data, loading, error }: searchContactProps) => {
           <div className="w-1/5 flex flex-col gap-2">
             <Input
               type="text"
-              placeholder="Pesquisar pelo nome ou telefone"
+              placeholder="Pesquise pelo nome e sobrenome de um contato"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               className="w-full text-lg py-2"
             />
-             <Button
-            variant="outline"
-            onClick={() => setIsFeedbackModalOpen(true)}
-            className="mt-2"
-            disabled={!searchTerm} 
-          >
-            Gerar Feedback
-          </Button>
+            <Button
+              variant="outline"
+              onClick={() => setIsFeedbackModalOpen(true)}
+              className="mt-2"
+              disabled={!searchTerm}
+            >
+              Gerar Feedback
+            </Button>
           </div>
           {error ? (
             <p className="text-red-500">Erro: {error}</p>

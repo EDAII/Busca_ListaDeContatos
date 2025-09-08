@@ -11,15 +11,16 @@ export const useHashSearch = ({ data, searchTerm }: useHashSearchProps) => {
   const [hashTime, setHashTime] = useState(0);
   const [hashComparisons, setHashComparisons] = useState(0);
 
+  // Função hash
   const hashFn = (key: string) => {
-    return (
-      key
+
+    return (key
         .toLowerCase()
         .split("")
-        .reduce((acc, char) => acc + char.charCodeAt(0), 0) % data.length
-    );
+        .reduce((acc, char) => acc + char.charCodeAt(0), 0) % data.length);
   };
 
+  // Cálculo do hash para cada dado da tabela
   const hashTable = useMemo(() => {
     const table: Record<string, Contact[]> = {};
     data.forEach((contact) => {
@@ -29,6 +30,7 @@ export const useHashSearch = ({ data, searchTerm }: useHashSearchProps) => {
       table[index].push(contact);
     });
     return table;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   useEffect(() => {
@@ -39,13 +41,17 @@ export const useHashSearch = ({ data, searchTerm }: useHashSearchProps) => {
       return;
     }
 
-    const start = performance.now();
     let comparisonsCount = 0;
     let results: Contact[] = [];
+    const start = performance.now();
 
+    // Hash do input
     const index = hashFn(searchTerm);
+
+    // Busca dos possíveis resultados por meio do hash
     const possibleMatches = hashTable[index] || [];
 
+    // Comparação com a busca dos possíveis resultados
     results = possibleMatches.filter((c) => {
       comparisonsCount++;
       const fullName = `${c.firstName} ${c.lastName}`.toLowerCase();
@@ -57,6 +63,7 @@ export const useHashSearch = ({ data, searchTerm }: useHashSearchProps) => {
     setHashResults(results);
     setHashTime(end - start);
     setHashComparisons(comparisonsCount);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, data, hashTable]);
 
   return { hashResults, hashTime, hashComparisons };

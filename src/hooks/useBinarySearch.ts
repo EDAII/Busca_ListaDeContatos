@@ -21,10 +21,9 @@ export const useBinarySearch = ({ data, searchTerm }: useBinarySearchProps) => {
   }, [data]);
 
   useEffect(() => {
-    // Dados retornandos ordenados por ID, sem a busca ser realizada
+    // Retorna dados ordenados por ID se não houver busca
     if (!data.length || !searchTerm) {
-      const sortedById = [...data].sort((a: Contact, b: Contact) => a.id - b.id);
-      setBinaryResults(sortedById);
+      setBinaryResults(data);
       setBinaryTime(0);
       setBinaryComparisons(0);
       return;
@@ -41,32 +40,22 @@ export const useBinarySearch = ({ data, searchTerm }: useBinarySearchProps) => {
       return fullName.includes(lowerSearch);
     };
 
-    // Função de busca binária simplificada
+    // Função de busca binária para encontrar um ponto de correspondência
     const binarySearch = (arr: Contact[]): Contact[] => {
       const found: Contact[] = [];
       let left = 0;
       let right = arr.length - 1;
+      let foundIndex = -1;
 
+      // Busca binária para encontrar um elemento correspondente
       while (left <= right) {
         const mid = Math.floor((left + right) / 2);
         const midName = `${arr[mid].firstName} ${arr[mid].lastName}`.toLowerCase();
         comparisonsCount++;
 
-        if (matchesSearchTerm(arr[mid])) {
-          // Adiciona o elemento encontrado
-          found.push(arr[mid]);
-
-          // Verifica elementos à esquerda
-          for (let i = mid - 1; i >= 0 && matchesSearchTerm(arr[i]); i--) {
-            found.push(arr[i]);
-          }
-
-          // Verifica elementos à direita
-          for (let i = mid + 1; i < arr.length && matchesSearchTerm(arr[i]); i++) {
-            found.push(arr[i]);
-          }
-
-          break; // Sai após encontrar o primeiro match
+        if (midName.includes(lowerSearch)) {
+          foundIndex = mid;
+          break;
         }
 
         if (midName < lowerSearch) {
@@ -76,13 +65,34 @@ export const useBinarySearch = ({ data, searchTerm }: useBinarySearchProps) => {
         }
       }
 
+      // Se encontrou um elemento, expande para esquerda e direita
+      if (foundIndex !== -1) {
+        found.push(arr[foundIndex]);
+
+        // Expande à esquerda
+        let i = foundIndex - 1;
+        while (i >= 0 && matchesSearchTerm(arr[i])) {
+          found.push(arr[i]);
+          i--;
+          comparisonsCount++;
+        }
+
+        // Expande à direita
+        i = foundIndex + 1;
+        while (i < arr.length && matchesSearchTerm(arr[i])) {
+          found.push(arr[i]);
+          i++;
+          comparisonsCount++;
+        }
+      }
+
       return found;
     };
 
     // Executa a busca binária
     const foundResults = binarySearch(sortedData);
 
-    // Ordena os resultados por ID em uma instrução separada
+    // Ordena os resultados por ID
     const sortedResults = [...foundResults].sort((a: Contact, b: Contact) => a.id - b.id);
 
     const end = performance.now();
