@@ -32,10 +32,10 @@ yarn run dev
 
 ## Capturas de tela
 
-<img src="https://github.com/EDAII/Busca_ListaDeContatos/tree/main/public/busca1.jpg?raw=true" alt="Screenshot 01" />
-<img src="https://github.com/EDAII/Busca_ListaDeContatos/tree/main/public/busca2.jpg?raw=true" alt="Screenshot 02" />
-<img src="https://github.com/EDAII/Busca_ListaDeContatos/tree/main/public/busca3.jpg?raw=true" alt="Screenshot 03" />
-<img src="https://github.com/EDAII/Busca_ListaDeContatos/tree/main/public/busca4.jpg?raw=true" alt="Screenshot 04" />
+<img src="https://raw.githubusercontent.com/EDAII/Busca_ListaDeContatos/refs/heads/main/public/busca1.jpg" alt="Screenshot 01" />
+<img src="https://raw.githubusercontent.com/EDAII/Busca_ListaDeContatos/refs/heads/main/public/busca2.jpg" alt="Screenshot 02" />
+<img src="https://raw.githubusercontent.com/EDAII/Busca_ListaDeContatos/refs/heads/main/public/busca3.jpg" alt="Screenshot 03" />
+<img src="https://raw.githubusercontent.com/EDAII/Busca_ListaDeContatos/refs/heads/main/public/busca4.jpg" alt="Screenshot 04" />
 
 ## Conclusões
 O projeto permitiu observar que diferentes algoritmos de busca apresentam vantagens distintas dependendo do contexto de aplicação:
