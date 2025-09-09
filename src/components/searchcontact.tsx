@@ -63,7 +63,7 @@ export const SearchContact = ({ data, loading, error }: searchContactProps) => {
     ];
 
     const bestMethod = methods.reduce((best, current) => {
-      if (current.time < best.time - Number.EPSILON) return current;
+      if (current.time <= best.time - Number.EPSILON) return current;
       if (
         Math.abs(current.time - best.time) < Number.EPSILON &&
         current.comparisons < best.comparisons
